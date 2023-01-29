@@ -1,0 +1,46 @@
+#01-Foodapp-Deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eks-foodapp-deployment
+  labels:
+    app: eks-foodappfe
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: eks-foodappfe
+  template:
+    metadata:
+      labels:
+        app: eks-foodappfe
+    spec:
+     containers:
+      - name: eks-foodapp
+        image: 452444392358.dkr.ecr.us-east-1.amazonaws.com/eksdemoecr:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          failureThreshold: 1
+          periodSeconds: 10
+        startupProbe:
+          httpGet:
+            path: /
+            port: 3000
+          failureThreshold: 30
+          periodSeconds: 10
+        readinessProbe:
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: 3000
+          periodSeconds: 5 

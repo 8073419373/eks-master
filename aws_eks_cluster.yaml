@@ -1,0 +1,10 @@
+plugin: aws_eks_cluster
+regions:
+  - "us-east-2"
+keyed_groups:
+  - key: tags.Name
+    prefix: tag_Name
+filters:
+  instance-state-name : running
+compose:
+  ansible_host: public_ip_address

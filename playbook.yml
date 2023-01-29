@@ -1,0 +1,16 @@
+---
+- name: Deploy to K8s Cluster 
+  hosts: all
+  become: true
+tasks:
+  - name: Deploy Pod
+    shell: |
+      kubectl apply -f Foodapp-Deployment.yml --validate=false
+  
+  - name: Deploy Service
+    shell: | 
+      kubectl apply -f Foodapp-Service.yml
+      
+  - name: Deploy Ingress
+    shell: | 
+      kubectl apply -f Foodapp-IngressService.yml --validate=false   
